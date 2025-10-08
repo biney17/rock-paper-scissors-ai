@@ -1,85 +1,114 @@
- 🪨✂️📄 Rock Paper Scissors – AI Bot
+# 🪨✂️📄 Rock Paper Scissors – AI Bot
 
  🧠 Description
 
-This project is an intelligent **Rock, Paper, Scissors** bot built using Python.
-Unlike random bots, this AI learns from the opponent’s previous moves to **predict and counter their next choice**.
+Ce projet est un bot intelligent de **Pierre-Papier-Ciseaux** développé en Python.
+Contrairement aux bots aléatoires, ce bot **apprend des coups précédents de l’adversaire** pour prédire et contrer son prochain choix.
 
-It was developed as part of the **FreeCodeCamp Machine Learning curriculum**, and it successfully defeats all four built-in bots (Quincy, Abbey, Kris, Mrugesh) with over **60% win rate** in each match.
+Il a été développé dans le cadre du programme **FreeCodeCamp Machine Learning**, et réussit à battre les quatre bots intégrés (Quincy, Abbey, Kris, Mrugesh) avec un taux de victoire supérieur à **60%** dans chaque match.
 
- 🚀 Features
+Grâce à la **nouvelle interface web améliorée**, tu peux désormais **jouer directement contre l’IA** depuis ton navigateur.
 
-* Learns opponent patterns dynamically
-* Adapts strategy to maximize win rate
-* Beats multiple types of opponents (predictive, repetitive, random)
-* Tested using FreeCodeCamp’s official test suite
 
- ⚙️ Installation
+🚀 Fonctionnalités
 
- 1. Clone this repository
+* Apprentissage dynamique des motifs de l’adversaire
+* Adaptation de la stratégie pour maximiser le taux de victoire
+* Bat plusieurs types d’adversaires (prédictifs, répétitifs, aléatoires)
+* **Interface web interactive** pour jouer en direct
+* Testé avec la suite de tests officielle de FreeCodeCamp
+
+
+ 🖥️ Interface Web
+
+* Choix de **Pierre, Papier ou Ciseaux** via boutons
+* Affichage du score et des résultats en temps réel
+* Design réactif pour mobile et desktop
+* Basé sur HTML/CSS/Flask dans `static/index.html` et `app.py`
+
+
+ 📦 Installation
+
+1. **Cloner le dépôt**
 
 ```bash
-git clone https://github.com/<your-username>/rock-paper-scissors-ai.git
+git clone https://github.com/biney17/rock-paper-scissors-ai.git
 cd rock-paper-scissors-ai
 ```
 
- 2. Run the project
+2. **Installer les dépendances**
 
 ```bash
-python main.py
+pip install -r requirements.txt
 ```
 
- 3. Run unit tests
+3. **Lancer l’application web**
+
+```bash
+python app.py
+```
+
+4. **Ouvrir le navigateur** sur (http://127.0.0.1:8000/play-game)
+
+5. **Exécuter les tests unitaires** (facultatif)
 
 ```bash
 python test_module.py
 ```
 
- 📊 Example Results
 
-| Opponent | Win Rate (%) |
-| -------- | ------------ |
-| Quincy   | 99.8%        |
-| Abbey    | 60.3%        |
-| Kris     | 87.4%        |
-| Mrugesh  | 81.7%        |
+ 📊 Résultats Exemple
 
-✅ **All tests passed!**
-This confirms the AI meets the 60% minimum win rate required by FreeCodeCamp.
+| Adversaire | Taux de Victoire (%) |
+| ---------- | -------------------- |
+| Quincy     | 99.8%                |
+| Abbey      | 60.3%                |
+| Kris       | 87.4%                |
+| Mrugesh    | 81.7%                |
 
- 🧩 How It Works
+✅ **Tous les tests ont été réussis !**
 
-The bot uses **pattern recognition**:
 
-1. Stores the opponent’s past moves.
-2. Searches for repeating sequences.
-3. Predicts the next move based on frequency.
-4. Plays the **winning counter-move**.
+ 🧩 Comment ça marche
 
-This method is similar to a **Markov chain model** used in AI decision systems.
+Le bot utilise la **reconnaissance de motifs** :
 
- 🛠️ Project Structure
+1. Stocke les coups précédents de l’adversaire
+2. Recherche des séquences répétitives
+3. Prédit le prochain coup basé sur la fréquence
+4. Joue le **contre-coup gagnant**
+
+Cette méthode est similaire à un **modèle de chaîne de Markov** utilisé dans les systèmes de décision IA.
+
+
+ 🛠️ Structure du Projet
 
 ```
 boilerplate-rock-paper-scissors-main/
 │
-├── RPS.py               # Your AI logic (edit this file)
-├── RPS_game.py          # Game engine (do not modify)
-├── test_module.py       # FreeCodeCamp test suite
-├── main.py              # Main script to run and test
-└── README.md            # Project documentation
+├── RPS.py               # Logique de l'IA
+├── RPS_game.py          # Moteur de jeu
+├── test_module.py       # Suite de tests FreeCodeCamp
+├── main.py              # Script principal pour exécuter et tester
+├── app.py               # Application Flask pour l'interface web
+├── static/
+│   └── index.html       # Page d'accueil de l'interface web
+└── README.md            # Documentation du projet
 ```
 
- 💡 Future Improvements
+ 💡 Améliorations Futures
 
-* Add a simple **machine learning model** (e.g. logistic regression) for better predictions
-* Create a **web interface** to play interactively
-* Implement **reinforcement learning** for adaptive strategies
+* Ajouter un **modèle ML plus avancé** pour des prédictions encore plus fiables
+* Ajouter des **animations et graphiques de score** dans l’interface web
+* Implémenter **l’apprentissage par renforcement** pour des stratégies adaptatives
 
- 👤 Author
+
+ 👤 Auteur
 
 **Isra Nour El Yakine Brahimi**
-🎓 Master’s in Embedded Systems
+🎓 Master en Systèmes Embarqués
 
-🔗 [LinkedIn Profile](https://www.linkedin.com/in/isra-nour-el-yakine-b-713a38208)
+🔗 [LinkedIn](https://www.linkedin.com/in/isra-nour-el-yakine-b-713a38208)
 
+
+Veux‑tu que je fasse ça ?
