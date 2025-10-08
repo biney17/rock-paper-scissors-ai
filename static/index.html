@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>🪨📄✂️ Rock Paper Scissors</title>
+  <style>
+    :root{
+      --bg1:#6dd5fa; --bg2:#2980b9;
+      --btn-bg: #fff; --btn-color:#333;
+      --win:#2ecc71; --lose:#e74c3c; --tie:#f1c40f;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh;
+      display:flex; align-items:center; justify-content:center;
+      background: linear-gradient(135deg,var(--bg1),var(--bg2));
+      font-family: 'Poppins', system-ui, Arial; color:#fff;
+    }
+    .card{
+      width: 720px; max-width:95%;
+      background: rgba(255,255,255,0.06);
+      border-radius:16px; padding:28px; text-align:center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+    }
+    h1{ margin:0 0 18px; font-size:28px; letter-spacing:1px }
+    .controls{ display:flex; gap:16px; justify-content:center; margin: 14px 0 8px; }
+    button.move{
+      padding:14px 28px; font-size:18px; border-radius:12px;
+      border:none; cursor:pointer; background:var(--btn-bg); color:var(--btn-color);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15); transition: transform .16s ease, box-shadow .16s;
+    }
+    button.move:hover{ transform: translateY(-6px); box-shadow:0 12px 26px rgba(0,0,0,0.2) }
+    #result{
+      margin-top:20px; min-height:56px; font-size:20px; display:flex;
+      align-items:center; justify-content:center; gap:10px;
+      transition: transform .25s ease, opacity .25s;
+      opacity: 0; transform: translateY(8px);
+    }
+    #result.visible{ opacity:1; transform: translateY(0); }
+    .badge{ padding:8px 12px; border-radius:10px; color:#111; font-weight:600 }
+    .badge.win{ background:var(--win) }
+    .badge.lose{ background:var(--lose) }
+    .badge.tie{ background:var(--tie) }
+    .score{
+      display:flex; gap:12px; justify-content:center; margin-top:18px;
+      color:#fff; opacity:0.95;
+    }
+    .score .col{ background:rgba(255,255,255,0.06); padding:10px 14px; border-radius:10px; min-width:110px }
+    .hint { margin-top:12px; font-size:13px; color:rgba(255,255,255,0.8) }
+
+    /* petit effet confetti simple via pseudo (optionnel) */
+    .confetti { position: absolute; pointer-events:none; top:8px; right:12px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🪨📄✂️ Rock Paper Scissors</h1>
+
+    <div class="controls">
+      <button class="move" onclick="play('R')">🪨 Rock</button>
+      <button class="move" onclick="play('P')">📄 Paper</button>
+      <button class="move" onclick="play('S')">✂️ Scissors</button>
+    </div>
+
+    <div id="result" aria-live="polite">Fais ton choix</div>
+
+    <div class="score" style="margin-top:16px">
+      <div class="col">✅ Gagnés: <span id="wins">0</span></div>
+      <div class="col">❌ Perdus: <span id="losses">0</span></div>
+      <div class="col">🤝 Égalités: <span id="ties">0</span></div>
+    </div>
+
+    <div class="hint">Serveur : <code>http://127.0.0.1:8000</code> — Ouvre <code>/play-game</code></div>
+  </div>
+
+  <script>
+    // scoreboard
+    let wins = 0, losses = 0, ties = 0;
+
+    async function play(choice) {
+      const resDiv = document.getElementById('result');
+
+      // affichage "en cours"
+      resDiv.className = ''; // reset vis
+      resDiv.innerHTML = '⏳ En cours...';
+      // envoi au backend
+      try {
+        const resp = await fetch('http://127.0.0.1:8000/play', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ player_move: choice })
+        });
+
+        if (!resp.ok) {
+          const text = await resp.text();
+          throw new Error('Erreur serveur: ' + resp.status + ' - ' + text);
+        }
+
+        const data = await resp.json();
+        console.log('[PLAY] response', data);
+
+        // data doit contenir: player, computer, result
+        const player = data.player || '—';
+        const computer = data.computer || '—';
+        const result = data.result || '—';
+
+        // mettre à jour scoreboard
+        if (result === 'player') wins++;
+        else if (result === 'computer') losses++;
+        else ties++;
+
+        document.getElementById('wins').innerText = wins;
+        document.getElementById('losses').innerText = losses;
+        document.getElementById('ties').innerText = ties;
+
+        // message stylé
+        let badgeClass = '';
+        let label = '';
+        if (result === 'player') { badgeClass = 'badge win'; label = '🎉 Tu gagnes !'; }
+        else if (result === 'computer') { badgeClass = 'badge lose'; label = '💀 Tu perds'; }
+        else { badgeClass = 'badge tie'; label = "🤝 Égalité"; }
+
+        resDiv.innerHTML = `
+          <span style="font-size:18px">Tu as choisi <strong>${player}</strong></span>
+          <span style="font-size:18px"> — L'ordi a choisi <strong>${computer}</strong></span>
+          <div style="width:14px"></div>
+          <span class="${badgeClass}">${label}</span>
+        `;
+        // show animation
+        resDiv.classList.add('visible');
+
+        // si tu veux confetti léger quand tu gagnes (simple)
+        if (result === 'player') fireConfetti();
+
+      } catch (err) {
+        console.error(err);
+        resDiv.innerHTML = 'Erreur réseau ou serveur — regarde la console (F12).';
+        resDiv.classList.add('visible');
+      }
+    }
+
+    // petit confetti "visuel" (simple, léger)
+    function fireConfetti() {
+      const el = document.createElement('div');
+      el.className = 'confetti';
+      el.innerHTML = '🎉';
+      document.body.appendChild(el);
+      setTimeout(()=>document.body.removeChild(el), 900);
+    }
+  </script>
+</body>
+</html>
